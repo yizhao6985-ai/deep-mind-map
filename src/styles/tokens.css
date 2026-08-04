@@ -2437,11 +2437,12 @@ body.is-sidebar-resizing * {
 }
 
 .mind-node {
+  --mind-node-max-w: 260px;
   position: relative;
   display: inline-flex;
   align-items: center;
   min-width: 48px;
-  max-width: 260px;
+  max-width: var(--mind-node-max-w);
 }
 
 /* Shared shell metrics — label / input / sizer must stay identical to avoid edit jitter */
@@ -2463,6 +2464,9 @@ body.is-sidebar-resizing * {
   /* Stay inside .mind-node max-width so chrome (+ / fold) orbits the visible box */
   max-width: 100%;
   min-width: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .mind-node__label {
@@ -2474,6 +2478,7 @@ body.is-sidebar-resizing * {
   text-align: left;
   cursor: pointer;
   box-shadow: none;
+  height: auto;
   transition:
     border-color 120ms ease,
     box-shadow 120ms ease,
@@ -2506,22 +2511,24 @@ body.is-sidebar-resizing * {
   appearance: none;
   -webkit-appearance: none;
   min-width: 0;
-  max-width: 260px;
+  max-width: var(--mind-node-max-w);
   border-color: var(--ink);
   box-shadow: 0 0 0 2px var(--ring-soft);
   outline: none;
+  resize: none;
+  overflow: hidden;
 }
 
-/* Hidden mirror — same type metrics as input so edit width never undershoots the label */
+/* Hidden mirror — same type metrics as input so edit size tracks wrapped label */
 .mind-node__sizer {
   position: absolute;
   left: 0;
   top: 0;
   visibility: hidden;
   pointer-events: none;
-  white-space: pre;
   height: auto;
-  max-width: none;
+  width: max-content;
+  max-width: var(--mind-node-max-w);
   display: inline-block;
   border-color: transparent;
 }
@@ -2564,9 +2571,9 @@ body.is-sidebar-resizing * {
 
 .mind-node__text {
   min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  white-space: inherit;
+  overflow-wrap: inherit;
+  word-break: inherit;
 }
 
 .mind-node.is-selected .mind-node__label {

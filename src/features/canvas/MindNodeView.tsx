@@ -34,8 +34,8 @@ function stop(e: MouseEvent) {
 function MindNodeView({ data, id }: NodeProps<MindNodeType>) {
   const [editing, setEditing] = useState(false)
   const [draft, setDraft] = useState(data.label)
-  const [editWidth, setEditWidth] = useState(72)
-  const inputRef = useRef<HTMLInputElement>(null)
+  const [editSize, setEditSize] = useState({ w: 72, h: 36 })
+  const inputRef = useRef<HTMLTextAreaElement>(null)
   const labelRef = useRef<HTMLButtonElement>(null)
   const sizerRef = useRef<HTMLSpanElement>(null)
   const depthClass = data.isRoot ? 'depth-0' : data.depth >= 3 ? 'depth-deep' : `depth-${data.depth}`
@@ -55,12 +55,21 @@ function MindNodeView({ data, id }: NodeProps<MindNodeType>) {
   useLayoutEffect(() => {
     if (!editing || !sizerRef.current) return
     const w = Math.ceil(sizerRef.current.offsetWidth)
-    setEditWidth((prev) => Math.max(prev, w))
+    const h = Math.ceil(sizerRef.current.offsetHeight)
+    setEditSize({
+      w: Math.max(48, w),
+      h: Math.max(28, h)
+    })
   }, [draft, editing])
 
   const beginEdit = (seed = data.label) => {
-    const w = labelRef.current?.offsetWidth
-    if (w && w > 0) setEditWidth(Math.ceil(w))
+    const el = labelRef.current
+    if (el) {
+      setEditSize({
+        w: Math.max(48, Math.ceil(el.offsetWidth)),
+        h: Math.max(28, Math.ceil(el.offsetHeight))
+      })
+    }
     setDraft(seed)
     setEditing(true)
   }
@@ -89,9 +98,9 @@ function MindNodeView({ data, id }: NodeProps<MindNodeType>) {
     setEditing(false)
   }
 
-  const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+  const onKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
     e.stopPropagation()
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault()
       commit()
     }
@@ -121,11 +130,12 @@ function MindNodeView({ data, id }: NodeProps<MindNodeType>) {
           <span ref={sizerRef} className="mind-node__sizer" aria-hidden>
             {draft || ' '}
           </span>
-          <input
+          <textarea
             ref={inputRef}
             className="mind-node__input nodrag nopan"
             value={draft}
-            style={{ width: editWidth }}
+            rows={1}
+            style={{ width: editSize.w, height: editSize.h }}
             onChange={(e) => setDraft(e.target.value)}
             onBlur={commit}
             onKeyDown={onKeyDown}

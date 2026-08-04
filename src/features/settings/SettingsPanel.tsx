@@ -347,7 +347,7 @@ export function SettingsPanel() {
                 <section className="settings-block" id="github">
                   <h2>GitHub 同步</h2>
                   <p className="caption">
-                    连接后会自动创建或绑定私有仓库 deep-mind-map，导图同步到仓库根目录。
+                    连接后会自动创建或绑定私有仓库 deep-mind-map-data，导图同步到仓库根目录。
                   </p>
 
                   {!ghConnected ? (

@@ -242,6 +242,42 @@ describe('layoutMindMap', () => {
   })
 })
 
+describe('estimateNodeSize', () => {
+  it('wraps long text within max width and grows height', () => {
+    const short = estimateNodeSize(
+      {
+        id: 'a',
+        parentId: null,
+        text: '短',
+        x: 0,
+        y: 0,
+        color: null,
+        collapsed: false,
+        order: 0
+      },
+      1,
+      'classic'
+    )
+    const long = estimateNodeSize(
+      {
+        id: 'b',
+        parentId: null,
+        text: '这是一段很长很长很长很长很长很长很长很长很长很长很长的节点文案需要换行展示',
+        x: 0,
+        y: 0,
+        color: null,
+        collapsed: false,
+        order: 0
+      },
+      1,
+      'classic'
+    )
+    expect(long.w).toBeLessThanOrEqual(260)
+    expect(long.w).toBeGreaterThan(short.w)
+    expect(long.h).toBeGreaterThan(short.h)
+  })
+})
+
 describe('schema roundtrip', () => {
   it('parses valid file', () => {
     const map = createEmptyMap('往返')

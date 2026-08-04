@@ -29,6 +29,9 @@ export function styleMetrics(style: MapStyle): StyleMetrics {
 export type NodeSize = { w: number; h: number }
 export type NodeSizeMap = ReadonlyMap<string, NodeSize>
 
+/** Matches `.mind-node { --mind-node-max-w }` — text wraps beyond this. */
+export const NODE_MAX_WIDTH = 260
+
 /** Approximate rendered label size from CSS tokens (padding + type). */
 export function estimateNodeSize(
   node: MindNode,
@@ -65,9 +68,18 @@ export function estimateNodeSize(
     borderY = isRoot ? 0 : 3
   }
 
-  const textW = measureTextWidth(node.text || ' ', fontSize)
-  const w = Math.min(260, Math.max(isRoot ? 72 : 48, Math.ceil(textW + padX)))
-  const h = Math.ceil(fontSize * lineHeight + padY + borderY)
+  const innerMax = Math.max(1, NODE_MAX_WIDTH - padX)
+  const segments = (node.text || ' ').split(/\n/)
+  let lines = 0
+  let widest = 0
+  for (const seg of segments) {
+    const segW = measureTextWidth(seg || ' ', fontSize)
+    widest = Math.max(widest, Math.min(segW, innerMax))
+    lines += Math.max(1, Math.ceil(segW / innerMax))
+  }
+
+  const w = Math.min(NODE_MAX_WIDTH, Math.max(isRoot ? 72 : 48, Math.ceil(widest + padX)))
+  const h = Math.ceil(fontSize * lineHeight * lines + padY + borderY)
   return { w, h }
 }
 

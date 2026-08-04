@@ -12,8 +12,8 @@ import { getSecret } from './secrets'
 import { patchSettings, readSettings } from './settings'
 import * as library from './library'
 
-/** 连接 GitHub 后自动创建 / 绑定的专用同步仓库 */
-export const DEFAULT_SYNC_REPO_NAME = 'deep-mind-map'
+/** 连接 GitHub 后自动创建 / 绑定的专用同步仓库（与开源仓库 deep-mind-map 区分） */
+export const DEFAULT_SYNC_REPO_NAME = 'deep-mind-map-data'
 
 function client(): Octokit {
   const token = getSecret('github.token')
@@ -226,19 +226,21 @@ export async function pullAll(
 }
 
 /**
- * 连接后确保有可用同步仓库：已配置且可访问则沿用；
- * 否则查找或创建默认私有仓 `deep-mind-map`，并写入 settings。
+ * 连接后确保有可用同步仓库：已正确绑定默认同步仓则沿用；
+ * 否则查找或创建默认私有仓 `deep-mind-map-data`，并写入 settings。
+ * 旧版曾误用开源仓名 `deep-mind-map`，此处会自动迁移。
  */
 export async function ensureDefaultSyncRepo(login: string): Promise<GitHubRepoSummary> {
   const octokit = client()
   const g = readSettings().github
 
-  if (g.owner && g.repo) {
+  // 仅沿用默认同步仓；勿沿用旧版绑定的 deep-mind-map（开源应用仓）
+  if (g.owner && g.repo === DEFAULT_SYNC_REPO_NAME) {
     try {
       const { data } = await octokit.repos.get({ owner: g.owner, repo: g.repo })
       return bindRepo(toSummary(data), login)
     } catch {
-      // 已配置仓库不可用，回退到默认仓
+      // 已配置仓库不可用，回退到查找 / 创建
     }
   }
 

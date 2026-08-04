@@ -226,7 +226,7 @@
 | 配置项 | 默认 / 说明 |
 |--------|-------------|
 | GitHub 授权 | **OAuth Device Flow**；Token 本机 `safeStorage` 加密保存 |
-| 同步仓库 | 连接后自动查找或创建私有仓 `deep-mind-map`，导图同步到仓库根目录 |
+| 同步仓库 | 连接后自动查找或创建私有仓 `deep-mind-map-data`，导图同步到仓库根目录 |
 | 分支 | 默认仓库的 `default_branch` |
 | 显示用 GitHub 用户名 | 授权成功后自动回填 |
 
@@ -237,7 +237,7 @@
 | ID | 需求 | 状态 |
 |----|------|------|
 | GH-01 | 设置页 Device Flow 连接；Token 不回传渲染进程明文 | 已交付 |
-| GH-02 | 连接后自动绑定 / 创建 `deep-mind-map` 并写入设置 | 已交付 |
+| GH-02 | 连接后自动绑定 / 创建 `deep-mind-map-data` 并写入设置 | 已交付 |
 | GH-03 | 测试连接 | 已交付 |
 | GH-04 | 手动推送 `.dmm.json` | 已交付 |
 | GH-05 | 手动拉取写入本地图库 | 已交付 |
@@ -367,7 +367,7 @@
 | Ask | 只回答、不改图的对话模式 |
 | ExportDocument / MindMapFile | 可持久化与交换的 `.dmm.json` |
 | Device Flow | GitHub OAuth 设备码授权 |
-| GitHub Sync | 手动推送 / 拉取到用户自有仓库 `deep-mind-map` 根目录 |
+| GitHub Sync | 手动推送 / 拉取到用户自有仓库 `deep-mind-map-data` 根目录 |
 | ThemeMode | 应用壳浅色 / 深色 / 跟随系统 |
 | 开源仓库 | 本产品的公开代码仓库（通常 ≠ 同步目标仓） |
 

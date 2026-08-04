@@ -100,7 +100,7 @@ flowchart TB
 | 密钥 | Electron `safeStorage` | 不可用时回退明文 JSON（实现已有） |
 | 校验 | Zod 3 | `MindMapFile` schema |
 | 测试 | Vitest 3 | 布局 / schema / 模型能力启发式 |
-| 打包 | electron-builder | dmg / nsis；脚本 `npm run dist` |
+| 打包 | Electron Forge | dmg / zip / squirrel；脚本 `npm run package` / `make` |
 | 包管理 | **npm**（非 pnpm） | 仓库含 `package-lock.json` |
 
 字体：Google Fonts **Manrope** + **IBM Plex Mono**（`src/index.html`）。
@@ -152,12 +152,14 @@ deep-mind-map/
 │   │   └── ai/                       # modelCapabilities
 │   └── styles/tokens.css
 ├── package.json
+├── forge.config.cjs
 ├── electron.vite.config.ts
 ├── vitest.config.ts
 ├── README.md
 └── LICENSE
 ```
 
+编译产物在 `dist/`；Forge 打包产物在 `out/`。
 共享类型在 `src/shared`；主进程经 TS path 引用同一 schema，避免双源漂移。
 
 ---
@@ -390,14 +392,15 @@ CI 建议：`typecheck` + `test`。
 ## 12. 构建与发布
 
 ```bash
-npm run dev       # electron-vite dev
-npm run build     # → out/
-npm run dist      # build + electron-builder --dir
+npm run dev       # electron-vite dev（输出 dist/）
+npm run build     # → dist/
+npm run package   # build + electron-forge package → out/（darwin arm64 + x64）
+npm run make      # build + electron-forge make → out/make/（darwin arm64 + x64）
 npm test
 npm run typecheck
 ```
 
-产物目录：`release/`；appId：`com.deepmindmap.app`。  
+编译输出：`dist/`；Forge 产物：`out/`（安装包在 `out/make/`）；appId：`com.deepmindmap.app`。  
 应用 semver 与文件 `schemaVersion` 分离。
 
 ---

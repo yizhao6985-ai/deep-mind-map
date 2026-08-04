@@ -575,7 +575,7 @@ export async function complete(
 
   if (action.type === 'generateFromTopic') {
     const data = await chatObject(
-      '你是思维导图生成器。根据主题生成 2～3 层结构，中文简明。',
+      '你是思维导图生成器。根据主题生成结构化思维导图，层数按主题复杂度自行决定，不做层数上限；中文简明。',
       action.topic,
       treeDraftSchema
     )

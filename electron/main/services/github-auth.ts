@@ -69,6 +69,11 @@ export async function getAuthStatus(): Promise<{
     if (data.login !== cached) {
       patchSettings({ github: { ...readSettings().github, displayName: data.login } })
     }
+    const { DEFAULT_SYNC_REPO_NAME, ensureDefaultSyncRepo } = await import('./github-sync')
+    const g = readSettings().github
+    if (!g.repo || g.repo !== DEFAULT_SYNC_REPO_NAME) {
+      await ensureDefaultSyncRepo(data.login)
+    }
     return { connected: true, login: data.login }
   } catch {
     return { connected: true, login: cached || null }
@@ -79,7 +84,9 @@ export async function disconnect(): Promise<void> {
   cancelDeviceAuth()
   deleteSecret('github.token')
   const g = readSettings().github
-  patchSettings({ github: { ...g, displayName: '' } })
+  patchSettings({
+    github: { ...g, owner: '', repo: '', branch: 'main', displayName: '' }
+  })
 }
 
 export function cancelDeviceAuth(): void {

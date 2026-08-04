@@ -5,12 +5,16 @@ node_modules/
 
 # Build / Electron
 dist/
+src/dist/
 out/
 release/
+build/icon.iconset/
 *.app
 *.dmg
 *.exe
 *.AppImage
+# Forge / packager leftovers
+.vite/
 
 # Env & secrets
 .env

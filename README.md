@@ -58,16 +58,16 @@
 
 ## 下载
 
-安装包筹备中。正式发版后可在此获取：
-
 **→ [GitHub Releases（Latest）](https://github.com/yizhao6985-ai/deep-mind-map/releases/latest)**
 
 | 平台 | 安装包 |
 |------|--------|
-| macOS | `.dmg` |
-| Windows | 安装程序 |
+| macOS (Apple Silicon) | `.dmg` / `.zip` |
+| Windows | 暂从源码运行 |
 
-也可先从源码运行（见下）。
+macOS 首次打开若提示「无法验证开发者」，可在 Finder 中右键应用 → 打开。
+
+也可从源码运行（见下）。
 
 ---
 
@@ -83,8 +83,9 @@ npm run dev
 ```bash
 npm test
 npm run typecheck
-npm run build    # 编译到 out/
-npm run dist     # 打包（electron-builder）
+npm run build    # 编译到 dist/
+npm run package  # Electron Forge 打包未压缩应用（out/；darwin arm64 + x64）
+npm run make     # 打 macOS dmg / zip（out/make/；darwin arm64 + x64）
 ```
 
 ### 可选：GitHub 同步（Device Flow）
