@@ -1,0 +1,66 @@
+{
+  "name": "deep-mind-map",
+  "version": "0.1.0",
+  "description": "Local-first open-source AI mind map (Electron)",
+  "main": "./out/main/index.js",
+  "author": "Deep Mind Map contributors",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "electron-vite build",
+    "preview": "electron-vite preview",
+    "typecheck": "tsc --noEmit -p tsconfig.web.json && tsc --noEmit -p tsconfig.node.json",
+    "test": "vitest run",
+    "dist": "npm run build && electron-builder --dir"
+  },
+  "dependencies": {
+    "@ai-sdk/anthropic": "^4.0.28",
+    "@ai-sdk/openai": "^4.0.28",
+    "@octokit/rest": "^21.1.1",
+    "@xyflow/react": "^12.6.0",
+    "ai": "^7.0.50",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-router-dom": "^7.5.0",
+    "uuid": "^11.1.0",
+    "zod": "^3.24.2",
+    "zustand": "^5.0.3"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.1",
+    "@types/uuid": "^10.0.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "electron": "^35.1.2",
+    "electron-builder": "^25.1.8",
+    "electron-vite": "^3.1.0",
+    "typescript": "^5.8.2",
+    "vite": "^6.2.3",
+    "vitest": "^3.0.9"
+  },
+  "build": {
+    "appId": "com.deepmindmap.app",
+    "productName": "Deep Mind Map",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "out/**/*",
+      "package.json"
+    ],
+    "mac": {
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "category": "public.app-category.productivity"
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ]
+    }
+  }
+}
